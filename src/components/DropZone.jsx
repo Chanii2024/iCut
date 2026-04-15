@@ -128,4 +128,4 @@ const DropZone = ({ onFilesAdded }) => {
     );
 };
 
-export default DropZone;
+export default React.memo(DropZone);

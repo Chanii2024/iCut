@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Download, FileText, Settings, Sparkles, Activity } from 'lucide-react';
 import CustomSelect from './CustomSelect';
 
@@ -325,4 +325,4 @@ const ControlPanel = ({
     );
 };
 
-export default ControlPanel;
+export default memo(ControlPanel);

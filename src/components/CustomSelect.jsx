@@ -143,4 +143,4 @@ const CustomSelect = ({ value, options, onChange, label }) => {
     );
 };
 
-export default CustomSelect;
+export default React.memo(CustomSelect);

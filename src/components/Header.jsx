@@ -77,4 +77,4 @@ const Header = ({ theme, toggleTheme }) => {
     );
 };
 
-export default Header;
+export default React.memo(Header);

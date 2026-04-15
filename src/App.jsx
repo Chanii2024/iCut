@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Sparkles } from 'lucide-react';
 import DropZone from './components/DropZone';
 import FileList from './components/FileList';
 import ControlPanel from './components/ControlPanel';
@@ -11,12 +12,16 @@ function App() {
   const [files, setFiles] = useState([]);
   const [renameSettings, setRenameSettings] = useState({ prefix: '', startNumber: 1 });
   const [outputFormat, setOutputFormat] = useState('original');
-  const [previewNames, setPreviewNames] = useState({});
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState({ current: 0, total: 0 });
+  const [notification, setNotification] = useState(null);
   const [theme, setTheme] = useState('light');
+  const [processingMode, setProcessingMode] = useState('single');
 
-  const [processingMode, setProcessingMode] = useState('single'); // 'single' | 'multi'
+  const showNotification = React.useCallback((message, type = 'info') => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 4000);
+  }, []);
 
   // Theme Effect
   useEffect(() => {
@@ -29,28 +34,36 @@ function App() {
 
   const handleFilesAdded = (newFiles) => {
     setFiles(prev => [...prev, ...newFiles]);
+    showNotification(`${newFiles.length} files added successfully!`, 'success');
   };
 
   const handleRemoveFile = (index) => {
     setFiles(prev => prev.filter((_, i) => i !== index));
   };
 
-  const handleRenameChange = (field, value) => {
+  const handleRenameChange = React.useCallback((field, value) => {
+    if (field === 'prefix') {
+      // Basic filename validation: no / \ : * ? " < > |
+      const illegalChars = /[\\/:\*\?"<>\|]/;
+      if (illegalChars.test(value)) {
+        showNotification('Illegal characters in prefix!', 'error');
+        return;
+      }
+    }
     setRenameSettings(prev => ({ ...prev, [field]: value }));
-  };
+  }, [showNotification]);
 
-  // Update preview names whenever files or settings change
-  useEffect(() => {
+  // Use useMemo for preview names to avoid extra state update cycles
+  const previewNames = React.useMemo(() => {
+    if (!renameSettings.prefix || files.length === 0) return {};
+    
     const newNames = {};
     files.forEach((file, index) => {
-      if (renameSettings.prefix) {
-        // Sequential renaming logic
-        const ext = file.name.split('.').pop();
-        const number = renameSettings.startNumber + index;
-        newNames[file.name] = `${renameSettings.prefix}-${number}.${ext}`;
-      }
+      const ext = file.name.split('.').pop();
+      const number = renameSettings.startNumber + index;
+      newNames[file.name] = `${renameSettings.prefix}-${number}.${ext}`;
     });
-    setPreviewNames(newNames);
+    return newNames;
   }, [files, renameSettings]);
 
   const handleExport = async (type) => {
@@ -70,9 +83,10 @@ function App() {
         processingMode,
         (current, total) => setProgress({ current, total })
       );
+      showNotification('Processing completed successfully!', 'success');
     } catch (error) {
       console.error('Export failed:', error);
-      alert('An error occurred during processing. Please try again.');
+      showNotification('An error occurred during processing. Please try again.', 'error');
     } finally {
       setIsProcessing(false);
       setProgress({ current: 0, total: 0 });
@@ -82,6 +96,15 @@ function App() {
   return (
     <div className={`app-container ${isProcessing ? 'processing' : ''}`}>
       <Header theme={theme} toggleTheme={toggleTheme} />
+
+      {notification && (
+        <div className={`system-notification ${notification.type}`}>
+          <div className="notif-content">
+            <Sparkles size={16} />
+            <span>{notification.message}</span>
+          </div>
+        </div>
+      )}
 
       <main className="app-main">
         <div className="hero-section">
@@ -153,7 +176,7 @@ function App() {
         .hero-section p {
           color: #86868b;
           font-size: 1.25rem;
-          margin: 1.2rem 0 5rem;
+          margin: 1.2rem 0 3rem;
           font-weight: 500;
           max-width: 600px;
         }
@@ -232,6 +255,39 @@ function App() {
         .app-container.processing .main-content {
           opacity: 0.6;
           pointer-events: none;
+        }
+
+        .system-notification {
+          position: fixed;
+          top: 2rem;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 1000;
+          animation: slide-down 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .notif-content {
+          background: var(--panel-bg);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          padding: 0.8rem 1.5rem;
+          border-radius: 99px;
+          border: 1px solid var(--glass-border);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+          display: flex;
+          align-items: center;
+          gap: 0.8rem;
+          color: var(--apple-text);
+          font-weight: 600;
+          font-size: 0.9rem;
+        }
+
+        .system-notification.success .notif-content { border-color: rgba(52, 199, 89, 0.3); }
+        .system-notification.error .notif-content { border-color: rgba(255, 59, 48, 0.3); color: #ff3b30; }
+
+        @keyframes slide-down {
+          from { opacity: 0; transform: translate(-50%, -20px); }
+          to { opacity: 1; transform: translate(-50%, 0); }
         }
       `}</style>
     </div>

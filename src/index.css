@@ -4,7 +4,7 @@
   --apple-gray-300: #f2f2f7;
   --apple-gray-400: #e5e5ea;
   --apple-blue: #0071e3;
-  --apple-text: #1d1d1f;
+  --apple-text: #2c2c2e;
   --apple-bg: #ffffff;
   --panel-bg: rgba(255, 255, 255, 0.82);
   --glass-border: rgba(255, 255, 255, 0.7);
@@ -101,4 +101,6 @@ body {
   box-shadow: var(--glass-shadow);
   border-radius: 18px;
   transition: background-color 0.3s ease, border-color 0.3s ease;
+  transform: translateZ(0); /* Hardware acceleration */
+  will-change: background-color, backdrop-filter;
 }

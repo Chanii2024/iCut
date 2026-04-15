@@ -62,11 +62,11 @@ const InfoSections = () => {
       <style>{`
         .info-wrapper {
           width: 100%;
+          max-width: 1400px;
+          margin: 2rem auto 4rem;
           display: flex;
           flex-direction: column;
           gap: 8rem;
-          margin-top: 2rem;
-          margin-bottom: 4rem;
         }
 
         .features-grid {
@@ -214,4 +214,4 @@ const InfoSections = () => {
   );
 };
 
-export default InfoSections;
+export default React.memo(InfoSections);
