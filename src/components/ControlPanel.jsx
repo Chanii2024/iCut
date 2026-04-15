@@ -1,293 +1,330 @@
 import React from 'react';
-import { Download, FileText, Settings, Sparkles } from 'lucide-react';
+import { Download, FileText, Settings, Sparkles, Activity } from 'lucide-react';
+import CustomSelect from './CustomSelect';
 
 const ControlPanel = ({
-  fileCount,
-  onRenameChange,
-  onFormatChange,
-  onExport,
-  renameSettings,
-  format,
-  isProcessing,
-  progress,
-  processingMode,
-  onModeChange,
+    fileCount,
+    onRenameChange,
+    onFormatChange,
+    onExport,
+    renameSettings,
+    format,
+    isProcessing,
+    progress,
+    processingMode,
+    onModeChange,
 }) => {
-  return (
-    <div className="control-panel glass-panel">
-      <div className="panel-section">
-        <div className="section-title">
-          <Settings size={16} />
-          <span>Renaming Options</span>
-        </div>
-        <div className="input-group">
-          <div className="field">
-            <label>Name Prefix</label>
-            <input
-              type="text"
-              placeholder="e.g. Vacation"
-              value={renameSettings.prefix}
-              onChange={(e) => onRenameChange('prefix', e.target.value)}
-            />
-          </div>
-          <div className="field">
-            <label>Start #</label>
-            <input
-              type="number"
-              value={renameSettings.startNumber}
-              min="1"
-              onChange={(e) => onRenameChange('startNumber', parseInt(e.target.value) || 1)}
-            />
-          </div>
-        </div>
-        <p className="hint">Files will be renamed to: {renameSettings.prefix ? `${renameSettings.prefix}-` : ''}{renameSettings.startNumber}...</p>
-      </div>
+    const formatOptions = [
+        { value: 'original', label: 'Keep Original' },
+        { value: 'image/jpeg', label: 'JPEG (High Quality)' },
+        { value: 'image/png', label: 'PNG (Lossless)' },
+        { value: 'image/webp', label: 'WebP (Modern)' },
+        { value: 'image/bmp', label: 'BMP (Windows)' },
+        { value: 'image/x-icon', label: 'ICO (Favicon)' },
+    ];
 
-      <div className="panel-divider"></div>
+    const modeOptions = [
+        { value: 'single', label: 'Standard (Single Lane)' },
+        { value: 'multi', label: 'Turbo (Multi Lane)' },
+    ];
 
-      <div className="panel-section">
-        <div className="section-title">
-          <Sparkles size={16} />
-          <span>Conversion</span>
-        </div>
-        <div className="format-selector">
-          <label>Output Format</label>
-          <select value={format} onChange={(e) => onFormatChange(e.target.value)}>
-            <option value="original">Keep Original</option>
-            <option value="image/jpeg">JPG</option>
-            <option value="image/png">PNG</option>
-            <option value="image/webp">WebP</option>
-            <option value="image/bmp">BMP</option>
-            <option value="image/heic">HEIC</option>
-            <option value="image/x-icon">ICO</option>
-          </select>
-        </div>
-      </div>
+    return (
+        <aside className="control-sidebar glass-panel">
+            <div className="sidebar-group">
+                <div className="section-header">
+                    <div className="header-icon blue-grad"><Settings size={14} /></div>
+                    <h4>Rename Policy</h4>
+                </div>
+                
+                <div className="fields-stack">
+                    <div className="input-field">
+                        <label>Name Prefix</label>
+                        <input
+                            type="text"
+                            placeholder="Prefix (e.g. holiday)"
+                            value={renameSettings.prefix}
+                            onChange={(e) => onRenameChange('prefix', e.target.value)}
+                        />
+                    </div>
+                    <div className="input-field">
+                        <label>Start Number</label>
+                        <input
+                            type="number"
+                            value={renameSettings.startNumber}
+                            min="1"
+                            onChange={(e) => onRenameChange('startNumber', parseInt(e.target.value) || 1)}
+                        />
+                    </div>
+                    {renameSettings.prefix && (
+                        <div className="rename-preview">
+                            Output format: <span>{renameSettings.prefix}-{renameSettings.startNumber}.ext</span>
+                        </div>
+                    )}
+                </div>
+            </div>
 
-      <div className="panel-divider"></div>
+            <div className="sidebar-divider"></div>
 
-      <div className="panel-section">
-        <div className="section-title">
-          <Settings size={16} />
-          <span>Processing Speed</span>
-        </div>
-        <div className="format-selector">
-          <label>Mode</label>
-          <select value={processingMode} onChange={(e) => onModeChange(e.target.value)}>
-            <option value="single">Single-Lane (Standard)</option>
-            <option value="multi">Multi-Lane (Turbo)</option>
-          </select>
-        </div>
+            <div className="sidebar-group">
+                <div className="section-header">
+                    <div className="header-icon purple-grad"><Sparkles size={14} /></div>
+                    <h4>Processing</h4>
+                </div>
+                
+                <div className="fields-stack">
+                    <CustomSelect 
+                        label="Output Format"
+                        value={format}
+                        options={formatOptions}
+                        onChange={onFormatChange}
+                    />
+                    
+                    <CustomSelect 
+                        label="Compute Mode"
+                        value={processingMode}
+                        options={modeOptions}
+                        onChange={onModeChange}
+                    />
+                </div>
 
-        {processingMode === 'multi' && (
-          <div className="warning-box">
-            ⚠️ Uses high CPU/RAM.
-          </div>
-        )}
-      </div>
+                {processingMode === 'multi' && (
+                    <div className="turbo-notice">
+                        <Activity size={12} />
+                        <span>Turbo mode active. High CPU usage.</span>
+                    </div>
+                )}
+            </div>
 
-      <div className="panel-divider"></div>
+            <div className="sidebar-actions">
+                <button
+                    className={`btn-primary ${isProcessing ? 'loading' : ''}`}
+                    onClick={() => onExport('process')}
+                    disabled={fileCount === 0 || isProcessing}
+                >
+                    {isProcessing ? (
+                        <div className="progress-bar-inline">
+                            <div className="fill" style={{ width: `${(progress.current / progress.total) * 100}%` }}></div>
+                            <span>{progress.current}/{progress.total}</span>
+                        </div>
+                    ) : (
+                        <>
+                            <Download size={18} />
+                            <span>Download {fileCount > 1 ? `ZIP (${fileCount})` : 'File'}</span>
+                        </>
+                    )}
+                </button>
 
-      <div className="panel-section actions">
-        <button
-          className="action-btn primary"
-          onClick={() => onExport('process')}
-          disabled={fileCount === 0 || isProcessing}
-        >
-          {isProcessing ? (
-            <span>Processing ({progress.current}/{progress.total})...</span>
-          ) : (
-            <>
-              <Download size={18} />
-              <span>Process & Download {fileCount > 1 ? '(ZIP)' : ''}</span>
-            </>
-          )}
-        </button>
+                {fileCount > 0 && (
+                    <button
+                        className="btn-secondary"
+                        onClick={() => onExport('pdf')}
+                    >
+                        <FileText size={18} />
+                        <span>Export as PDF</span>
+                    </button>
+                )}
+            </div>
 
-        {fileCount > 0 && (
-          <button
-            className="action-btn secondary"
-            onClick={() => onExport('pdf')}
-          >
-            <FileText size={18} />
-            <span>Export as PDF</span>
-          </button>
-        )}
-      </div>
+            <style>{`
+                .control-sidebar {
+                    width: 100%;
+                    padding: 2rem;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 2.5rem;
+                    height: fit-content;
+                    position: sticky;
+                    top: 100px;
+                }
 
-      <style>{`
-        .control-panel {
-          width: 100%;
-          max-width: 1000px;
-          padding: 1.5rem;
-          margin-bottom: 2rem;
-          background: var(--panel-bg);
-          border: 1px solid var(--glass-border);
-          
-          /* Mobile First: Stacked */
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 2rem;
-        }
+                .sidebar-group {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1.5rem;
+                }
 
-        .panel-section {
-          display: flex;
-          flex-direction: column;
-          gap: 0.8rem;
-          min-width: 0; /* Prevent flex/grid blowout */
-        }
+                .section-header {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.8rem;
+                }
 
-        /* Desktop Layout */
-        @media (min-width: 900px) {
-           .control-panel {
-             grid-template-columns: 1.2fr 1fr 1fr 1.2fr;
-             gap: 2rem;
-           }
+                .header-icon {
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 8px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                }
 
-           .panel-section {
-             position: relative;
-           }
-           
-           .panel-section:not(:last-child)::after {
-             content: '';
-             position: absolute;
-             right: -1rem;
-             top: 0;
-             bottom: 0;
-             width: 1px;
-             background: var(--apple-gray-300);
-           }
-        }
+                .blue-grad { background: linear-gradient(135deg, #0071e3, #5ac8fa); }
+                .purple-grad { background: linear-gradient(135deg, #af52de, #bf5af2); }
 
-        .section-title {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          color: var(--apple-text);
-          font-weight: 600;
-          font-size: 0.95rem;
-          white-space: nowrap;
-        }
+                .section-header h4 {
+                    margin: 0;
+                    font-size: 0.9rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    color: var(--apple-text);
+                    opacity: 0.8;
+                }
 
-        /* Inputs */
-        .input-group {
-          display: grid;
-          grid-template-columns: 2fr 1fr;
-          gap: 1rem;
-        }
+                .fields-stack {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1.2rem;
+                }
 
-        .field {
-          display: flex;
-          flex-direction: column;
-          gap: 0.4rem;
-        }
+                .input-field {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                }
 
-        .field label, .format-selector label {
-          font-size: 0.75rem;
-          color: #86868b;
-          font-weight: 600;
-          letter-spacing: 0.02em;
-        }
+                .input-field label {
+                    font-size: 0.75rem;
+                    color: #86868b;
+                    font-weight: 600;
+                    margin-left: 4px;
+                }
 
-        input, select {
-          width: 100%;
-          padding: 0.75rem;
-          border-radius: 10px;
-          border: 1px solid var(--apple-gray-400);
-          background: var(--apple-bg);
-          color: var(--apple-text);
-          font-size: 0.95rem;
-          outline: none;
-          transition: all 0.2s;
-        }
+                .input-field input {
+                    background: var(--apple-bg);
+                    border: 1px solid var(--apple-gray-400);
+                    padding: 0.75rem 1rem;
+                    border-radius: 12px;
+                    color: var(--apple-text);
+                    font-size: 0.95rem;
+                    outline: none;
+                    transition: all 0.2s;
+                }
 
-        input:focus, select:focus {
-          border-color: var(--apple-blue);
-          box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
-        }
+                .input-field input:focus {
+                    border-color: var(--apple-blue);
+                    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+                }
 
-        .hint {
-          font-size: 0.75rem;
-          color: #86868b;
-          margin-top: 0.2rem;
-        }
+                .rename-preview {
+                    font-size: 0.75rem;
+                    color: #86868b;
+                    background: var(--apple-gray-100);
+                    padding: 0.6rem 0.8rem;
+                    border-radius: 8px;
+                    border: 1px dashed var(--apple-gray-400);
+                }
 
-        .warning-box {
-          font-size: 0.75rem;
-          color: #FF9500; /* Apple warning orange */
-          background: rgba(255, 149, 0, 0.1);
-          padding: 0.5rem;
-          border-radius: 8px;
-          border: 1px solid rgba(255, 149, 0, 0.2);
-          margin-top: 0.2rem;
-          font-weight: 500;
-        }
+                .rename-preview span {
+                    color: var(--apple-blue);
+                    font-weight: 600;
+                }
 
-        /* Actions */
-        .actions {
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-end;
-          height: 100%;
-          gap: 0.8rem;
-        }
+                .sidebar-divider {
+                    height: 1px;
+                    background: var(--apple-gray-300);
+                    opacity: 0.4;
+                }
 
-        .action-btn {
-          border: none;
-          border-radius: 10px;
-          padding: 0.8rem;
-          font-size: 0.95rem;
-          font-weight: 500;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.6rem;
-          transition: all 0.2s;
-          width: 100%;
-          white-space: nowrap;
-        }
+                .turbo-notice {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-size: 0.75rem;
+                    color: #FF9500;
+                    font-weight: 600;
+                    padding: 0.5rem;
+                    background: rgba(255, 149, 0, 0.1);
+                    border-radius: 8px;
+                }
 
-        .action-btn:active {
-          transform: scale(0.98);
-        }
+                .sidebar-actions {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1rem;
+                    margin-top: auto;
+                }
 
-        .action-btn.primary {
-          background: var(--apple-blue);
-          color: white;
-          box-shadow: 0 2px 8px rgba(0, 113, 227, 0.2);
-        }
+                .btn-primary, .btn-secondary {
+                    width: 100%;
+                    padding: 1rem;
+                    border-radius: 14px;
+                    border: none;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0.8rem;
+                    font-weight: 600;
+                    font-size: 0.95rem;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                }
 
-        .action-btn.primary:hover:not(:disabled) {
-          background: #0077ED;
-        }
+                .btn-primary {
+                    background: var(--apple-blue);
+                    color: white;
+                    box-shadow: 0 4px 15px rgba(0, 113, 227, 0.2);
+                }
 
-        .action-btn.secondary {
-          background: rgba(118, 118, 128, 0.12);
-          color: var(--apple-text);
-        }
-        
-        .action-btn.secondary:hover {
-            background: rgba(118, 118, 128, 0.2);
-        }
+                .btn-primary:hover:not(:disabled) {
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 25px rgba(0, 113, 227, 0.3);
+                }
 
-        .action-btn:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
+                .btn-primary:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                }
 
-        .format-selector {
-           display: flex;
-           flex-direction: column;
-           gap: 0.4rem;
-        }
+                .btn-primary.loading {
+                    position: relative;
+                    overflow: hidden;
+                    padding: 0;
+                    height: 50px;
+                }
 
-        /* Clean up unused elements */
-        .panel-divider { display: none !important; }
+                .progress-bar-inline {
+                    width: 100%;
+                    height: 100%;
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
 
-      `}</style>
-    </div>
-  );
+                .progress-bar-inline .fill {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
+                    background: rgba(255, 255, 255, 0.2);
+                    transition: width 0.3s ease;
+                }
+
+                .progress-bar-inline span {
+                    position: relative;
+                    z-index: 1;
+                }
+
+                .btn-secondary {
+                    background: rgba(118, 118, 128, 0.12);
+                    color: var(--apple-text);
+                }
+
+                .btn-secondary:hover {
+                    background: rgba(118, 118, 128, 0.2);
+                }
+
+                @media (max-width: 900px) {
+                    .control-sidebar {
+                        position: static;
+                        top: 0;
+                    }
+                }
+            `}</style>
+        </aside>
+    );
 };
 
 export default ControlPanel;

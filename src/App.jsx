@@ -83,56 +83,107 @@ function App() {
         <div className={`app-container ${isProcessing ? 'processing' : ''}`}>
             <Header theme={theme} toggleTheme={toggleTheme} />
 
-            <div className="main-content">
-                <header className="page-header">
-                    <h2>Local Batch Converter</h2>
-                    <p>Convert, rename, and zip files securely on your device.</p>
-                </header>
+            <main className="app-main">
+                <div className="layout-grid">
+                    <section className="controls-area">
+                        <ControlPanel
+                            fileCount={files.length}
+                            renameSettings={renameSettings}
+                            format={outputFormat}
+                            processingMode={processingMode}
+                            onRenameChange={handleRenameChange}
+                            onFormatChange={setOutputFormat}
+                            onModeChange={setProcessingMode}
+                            onExport={handleExport}
+                            isProcessing={isProcessing}
+                            progress={progress}
+                        />
+                    </section>
 
-                <DropZone onFilesAdded={handleFilesAdded} />
+                    <section className="content-area">
+                        <div className="hero-section">
+                            <h1>Local Batch Converter</h1>
+                            <p>Rename, convert, and bundle your assets securely in one place.</p>
+                        </div>
+                        
+                        <DropZone onFilesAdded={handleFilesAdded} />
 
-                <ControlPanel
-                    fileCount={files.length}
-                    renameSettings={renameSettings}
-                    format={outputFormat}
-                    processingMode={processingMode}
-                    onRenameChange={handleRenameChange}
-                    onFormatChange={setOutputFormat}
-                    onModeChange={setProcessingMode}
-                    onExport={handleExport}
-                    isProcessing={isProcessing}
-                    progress={progress}
-                />
+                        <FileList
+                            files={files}
+                            onRemove={handleRemoveFile}
+                            newNames={previewNames}
+                        />
 
-                <FileList
-                    files={files}
-                    onRemove={handleRemoveFile}
-                    newNames={previewNames}
-                />
-
-                <InfoSections />
-            </div>
+                        <InfoSections />
+                    </section>
+                </div>
+            </main>
 
             <Footer />
 
             <style>{`
-        .page-header {
-          text-align: center;
-          margin-bottom: 2rem;
+        .app-main {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          padding: 2rem;
+          flex: 1;
         }
 
-        .page-header h2 {
-          font-size: 2rem;
-          font-weight: 700;
+        .layout-grid {
+          width: 100%;
+          max-width: 1400px;
+          display: grid;
+          grid-template-columns: 350px 1fr;
+          gap: 3rem;
+          align-items: start;
+        }
+
+        .content-area {
+          display: flex;
+          flex-direction: column;
+          gap: 2.5rem;
+          min-width: 0;
+        }
+
+        .hero-section {
+          margin-bottom: 0.5rem;
+        }
+
+        .hero-section h1 {
+          font-size: 2.8rem;
+          font-weight: 800;
           margin: 0;
-          letter-spacing: -0.01em;
+          letter-spacing: -0.04em;
           color: var(--apple-text);
+          line-height: 1.1;
         }
 
-        .page-header p {
+        .hero-section p {
           color: #86868b;
-          font-size: 1.1rem;
-          margin-top: 0.5rem;
+          font-size: 1.25rem;
+          margin-top: 1rem;
+          font-weight: 500;
+          max-width: 600px;
+        }
+
+        @media (max-width: 1100px) {
+          .layout-grid {
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+          }
+          
+          .controls-area {
+            order: 2;
+          }
+          
+          .content-area {
+            order: 1;
+          }
+
+          .hero-section h1 {
+            font-size: 2.2rem;
+          }
         }
 
         .app-container.processing {
