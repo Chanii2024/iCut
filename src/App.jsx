@@ -8,164 +8,162 @@ import InfoSections from './components/InfoSections';
 import { processAndDownload } from './utils/fileProcessor';
 
 function App() {
-    const [files, setFiles] = useState([]);
-    const [renameSettings, setRenameSettings] = useState({ prefix: '', startNumber: 1 });
-    const [outputFormat, setOutputFormat] = useState('original');
-    const [previewNames, setPreviewNames] = useState({});
-    const [isProcessing, setIsProcessing] = useState(false);
-    const [progress, setProgress] = useState({ current: 0, total: 0 });
-    const [theme, setTheme] = useState('light');
+  const [files, setFiles] = useState([]);
+  const [renameSettings, setRenameSettings] = useState({ prefix: '', startNumber: 1 });
+  const [outputFormat, setOutputFormat] = useState('original');
+  const [previewNames, setPreviewNames] = useState({});
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [progress, setProgress] = useState({ current: 0, total: 0 });
+  const [theme, setTheme] = useState('light');
 
-    const [processingMode, setProcessingMode] = useState('single'); // 'single' | 'multi'
+  const [processingMode, setProcessingMode] = useState('single'); // 'single' | 'multi'
 
-    // Theme Effect
-    useEffect(() => {
-        document.documentElement.setAttribute('data-theme', theme);
-    }, [theme]);
+  // Theme Effect
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
-    const toggleTheme = () => {
-        setTheme(prev => prev === 'light' ? 'dark' : 'light');
-    };
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
-    const handleFilesAdded = (newFiles) => {
-        setFiles(prev => [...prev, ...newFiles]);
-    };
+  const handleFilesAdded = (newFiles) => {
+    setFiles(prev => [...prev, ...newFiles]);
+  };
 
-    const handleRemoveFile = (index) => {
-        setFiles(prev => prev.filter((_, i) => i !== index));
-    };
+  const handleRemoveFile = (index) => {
+    setFiles(prev => prev.filter((_, i) => i !== index));
+  };
 
-    const handleRenameChange = (field, value) => {
-        setRenameSettings(prev => ({ ...prev, [field]: value }));
-    };
+  const handleRenameChange = (field, value) => {
+    setRenameSettings(prev => ({ ...prev, [field]: value }));
+  };
 
-    // Update preview names whenever files or settings change
-    useEffect(() => {
-        const newNames = {};
-        files.forEach((file, index) => {
-            if (renameSettings.prefix) {
-                // Sequential renaming logic
-                const ext = file.name.split('.').pop();
-                const number = renameSettings.startNumber + index;
-                newNames[file.name] = `${renameSettings.prefix}-${number}.${ext}`;
-            }
-        });
-        setPreviewNames(newNames);
-    }, [files, renameSettings]);
+  // Update preview names whenever files or settings change
+  useEffect(() => {
+    const newNames = {};
+    files.forEach((file, index) => {
+      if (renameSettings.prefix) {
+        // Sequential renaming logic
+        const ext = file.name.split('.').pop();
+        const number = renameSettings.startNumber + index;
+        newNames[file.name] = `${renameSettings.prefix}-${number}.${ext}`;
+      }
+    });
+    setPreviewNames(newNames);
+  }, [files, renameSettings]);
 
-    const handleExport = async (type) => {
-        if (files.length === 0) return;
+  const handleExport = async (type) => {
+    if (files.length === 0) return;
 
-        setIsProcessing(true);
-        setProgress({ current: 0, total: files.length });
+    setIsProcessing(true);
+    setProgress({ current: 0, total: files.length });
 
-        try {
-            await new Promise(resolve => setTimeout(resolve, 100)); // UI update
+    try {
+      await new Promise(resolve => setTimeout(resolve, 100)); // UI update
 
-            await processAndDownload(
-                files,
-                renameSettings,
-                outputFormat,
-                type,
-                processingMode,
-                (current, total) => setProgress({ current, total })
-            );
-        } catch (error) {
-            console.error('Export failed:', error);
-            alert('An error occurred during processing. Please try again.');
-        } finally {
-            setIsProcessing(false);
-            setProgress({ current: 0, total: 0 });
-        }
-    };
+      await processAndDownload(
+        files,
+        renameSettings,
+        outputFormat,
+        type,
+        processingMode,
+        (current, total) => setProgress({ current, total })
+      );
+    } catch (error) {
+      console.error('Export failed:', error);
+      alert('An error occurred during processing. Please try again.');
+    } finally {
+      setIsProcessing(false);
+      setProgress({ current: 0, total: 0 });
+    }
+  };
 
-    return (
-        <div className={`app-container ${isProcessing ? 'processing' : ''}`}>
-            <Header theme={theme} toggleTheme={toggleTheme} />
+  return (
+    <div className={`app-container ${isProcessing ? 'processing' : ''}`}>
+      <Header theme={theme} toggleTheme={toggleTheme} />
 
-            <main className="app-main">
-                <div className="hero-section">
-                    <h1>Local Batch Converter</h1>
-                    <p>Rename, convert, and bundle your assets securely in one place.</p>
-                </div>
+      <main className="app-main">
+        <div className="hero-section">
+          <h1>Local Batch Converter</h1>
+          <p>Rename, convert, and bundle your assets securely in one place.</p>
+        </div>
 
-                <div className="layout-grid">
-                    <aside className="controls-area">
-                        <ControlPanel
-                            fileCount={files.length}
-                            renameSettings={renameSettings}
-                            format={outputFormat}
-                            processingMode={processingMode}
-                            onRenameChange={handleRenameChange}
-                            onFormatChange={setOutputFormat}
-                            onModeChange={setProcessingMode}
-                            onExport={handleExport}
-                            isProcessing={isProcessing}
-                            progress={progress}
-                        />
-                    </aside>
+        <div className="layout-grid">
+          <aside className="controls-area">
+            <ControlPanel
+              fileCount={files.length}
+              renameSettings={renameSettings}
+              format={outputFormat}
+              processingMode={processingMode}
+              onRenameChange={handleRenameChange}
+              onFormatChange={setOutputFormat}
+              onModeChange={setProcessingMode}
+              onExport={handleExport}
+              isProcessing={isProcessing}
+              progress={progress}
+            />
+          </aside>
 
-                    <section className="content-area">
-                        <DropZone onFilesAdded={handleFilesAdded} />
+          <section className="content-area">
+            <DropZone onFilesAdded={handleFilesAdded} />
 
-                        <FileList
-                            files={files}
-                            onRemove={handleRemoveFile}
-                            newNames={previewNames}
-                        />
-                    </section>
-                </div>
+            <FileList
+              files={files}
+              onRemove={handleRemoveFile}
+              newNames={previewNames}
+            />
+          </section>
+        </div>
 
-                <div className="independent-sections">
-                    <InfoSections />
-                </div>
-            </main>
+        <div className="independent-sections">
+          <InfoSections />
+        </div>
+      </main>
 
-            <Footer />
+      <Footer />
 
-            <style>{`
+      <style>{`
         .app-main {
           width: 100%;
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 6rem 2rem;
+          padding: 4rem 2rem;
           flex: 1;
         }
 
         .hero-section {
           width: 100%;
-          max-width: 1200px;
-          text-align: center;
-          margin-bottom: 6rem;
+          text-align: left;
+          margin-bottom: 2.5rem;
         }
 
         .hero-section h1 {
-          font-size: 3.8rem;
+          font-size: 3.2rem;
           font-weight: 800;
           margin: 0;
           letter-spacing: -0.05em;
           color: var(--apple-text);
-          line-height: 1.05;
+          line-height: 1.1;
         }
 
         .hero-section p {
           color: #86868b;
-          font-size: 1.5rem;
-          margin: 1.5rem auto 0;
+          font-size: 1.25rem;
+          margin: 0.8rem 0 0;
           font-weight: 500;
-          max-width: 650px;
-          line-height: 1.4;
+          max-width: 600px;
         }
 
         .layout-grid {
           width: 100%;
-          max-width: 1300px;
+          max-width: 1400px;
           display: grid;
           grid-template-columns: 380px 1fr;
-          gap: 4rem;
+          gap: 3rem;
           align-items: start;
-          margin-bottom: 10rem;
+          margin-bottom: 8rem;
         }
 
         .controls-area {
@@ -234,8 +232,8 @@ function App() {
           pointer-events: none;
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 }
 
 export default App;

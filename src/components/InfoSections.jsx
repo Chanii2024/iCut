@@ -2,64 +2,64 @@ import React from 'react';
 import { Shield, Zap, RefreshCcw, Package } from 'lucide-react';
 
 const InfoSections = () => {
-    const features = [
-        {
-            icon: <Shield size={24} />,
-            title: "Private & Secure",
-            desc: "Your files never leave your device. All processing happens entirely in your browser using client-side technology."
-        },
-        {
-            icon: <Zap size={24} />,
-            title: "Ultra Fast",
-            desc: "Powered by multi-lane processing to handle large batches of files simultaneously without server delays."
-        },
-        {
-            icon: <RefreshCcw size={24} />,
-            title: "Smart Conversion",
-            desc: "Support for HEIC, JPEG, PNG, WEBP, and more with high-quality output and zero data loss."
-        },
-        {
-            icon: <Package size={24} />,
-            title: "Batch Rename",
-            desc: "Automatically organize your files with sequential numbering and custom prefixes in seconds."
-        }
-    ];
+  const features = [
+    {
+      icon: <Shield size={24} />,
+      title: "Private & Secure",
+      desc: "Your files never leave your device. All processing happens entirely in your browser using client-side technology."
+    },
+    {
+      icon: <Zap size={24} />,
+      title: "Ultra Fast",
+      desc: "Powered by multi-lane processing to handle large batches of files simultaneously without server delays."
+    },
+    {
+      icon: <RefreshCcw size={24} />,
+      title: "Smart Conversion",
+      desc: "Support for HEIC, JPEG, PNG, WEBP, and more with high-quality output and zero data loss."
+    },
+    {
+      icon: <Package size={24} />,
+      title: "Batch Rename",
+      desc: "Automatically organize your files with sequential numbering and custom prefixes in seconds."
+    }
+  ];
 
-    const steps = [
-        { num: "01", title: "Drop Files", desc: "Drag and drop your images or files into the secure zone above." },
-        { num: "02", title: "Configure", desc: "Set your renaming preferences and Choose your target output format." },
-        { num: "03", title: "Convert & Zip", desc: "Hit export and get your processed files instantly as a ZIP." }
-    ];
+  const steps = [
+    { num: "01", title: "Drop Files", desc: "Drag and drop your images or files into the secure zone above." },
+    { num: "02", title: "Configure", desc: "Set your renaming preferences and Choose your target output format." },
+    { num: "03", title: "Convert & Zip", desc: "Hit export and get your processed files instantly as a ZIP." }
+  ];
 
-    return (
-        <div className="info-wrapper">
-            <section id="features" className="features-grid">
-                {features.map((f, i) => (
-                    <div key={i} id={i === 0 ? "security" : undefined} className="feature-card glass-panel">
-                        <div className="icon-wrapper">{f.icon}</div>
-                        <h3>{f.title}</h3>
-                        <p>{f.desc}</p>
-                    </div>
-                ))}
-            </section>
+  return (
+    <div className="info-wrapper">
+      <section id="features" className="features-grid">
+        {features.map((f, i) => (
+          <div key={i} id={i === 0 ? "security" : undefined} className="feature-card glass-panel">
+            <div className="icon-wrapper">{f.icon}</div>
+            <h3>{f.title}</h3>
+            <p>{f.desc}</p>
+          </div>
+        ))}
+      </section>
 
-            <section id="how" className="how-it-works glass-panel">
-                <div className="section-header">
-                    <h2>How it works</h2>
-                    <p>Three simple steps to manage your media efficiently.</p>
-                </div>
-                <div className="steps-container">
-                    {steps.map((s, i) => (
-                        <div key={i} className="step-item">
-                            <span className="step-num">{s.num}</span>
-                            <h4>{s.title}</h4>
-                            <p>{s.desc}</p>
-                        </div>
-                    ))}
-                </div>
-            </section>
+      <section id="how" className="how-it-works glass-panel">
+        <div className="section-header">
+          <h2>How it works</h2>
+          <p>Three simple steps to manage your media efficiently.</p>
+        </div>
+        <div className="steps-container">
+          {steps.map((s, i) => (
+            <div key={i} className="step-item">
+              <span className="step-num">{s.num}</span>
+              <h4>{s.title}</h4>
+              <p>{s.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-            <style>{`
+      <style>{`
         .info-wrapper {
           width: 100%;
           display: flex;
@@ -118,14 +118,14 @@ const InfoSections = () => {
         }
 
         .how-it-works {
-          padding: 6rem 3rem;
-          border-radius: 48px;
-          text-align: center;
+          padding: 8rem 5rem;
+          border-radius: 64px;
+          text-align: left;
           background: var(--apple-gray-200);
           border: 1px solid var(--apple-gray-400);
           display: flex;
           flex-direction: column;
-          align-items: center;
+          gap: 5rem;
         }
 
         [data-theme='dark'] .how-it-works {
@@ -134,30 +134,33 @@ const InfoSections = () => {
         }
 
         .section-header {
-            max-width: 600px;
-            margin: 0 auto 5rem;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            width: 100%;
+            gap: 2rem;
         }
 
         .section-header h2 {
-          font-size: 3rem;
+          font-size: 3.2rem;
           font-weight: 800;
-          margin-bottom: 1.2rem;
-          letter-spacing: -0.04em;
+          margin: 0;
+          letter-spacing: -0.05em;
           color: var(--apple-text);
+          white-space: nowrap;
         }
 
         .section-header p {
           color: #86868b;
-          font-size: 1.2rem;
+          font-size: 1.25rem;
+          max-width: 500px;
           margin: 0;
-          line-height: 1.5;
+          text-align: right;
         }
 
         .steps-container {
           display: flex;
-          justify-content: space-around;
-          width: 100%;
+          justify-content: space-between;
           gap: 2rem;
         }
 
@@ -169,14 +172,14 @@ const InfoSections = () => {
         }
 
         .step-num {
-          font-size: 3.5rem;
+          font-size: 3rem;
           font-weight: 800;
           background: linear-gradient(180deg, var(--apple-blue), transparent);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
-          opacity: 0.5;
+          opacity: 0.3;
           line-height: 1;
-          margin-bottom: 1.5rem;
+          margin-bottom: 1rem;
         }
 
         .step-item h4 {
@@ -207,8 +210,8 @@ const InfoSections = () => {
           }
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 };
 
 export default InfoSections;
