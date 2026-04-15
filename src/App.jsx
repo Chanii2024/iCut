@@ -113,9 +113,11 @@ function App() {
                             onRemove={handleRemoveFile}
                             newNames={previewNames}
                         />
-
-                        <InfoSections />
                     </section>
+                </div>
+
+                <div className="independent-sections">
+                    <InfoSections />
                 </div>
             </main>
 
@@ -125,7 +127,8 @@ function App() {
         .app-main {
           width: 100%;
           display: flex;
-          justify-content: center;
+          flex-direction: column;
+          align-items: center;
           padding: 2rem;
           flex: 1;
         }
@@ -137,6 +140,12 @@ function App() {
           grid-template-columns: 350px 1fr;
           gap: 3rem;
           align-items: start;
+          margin-bottom: 5rem;
+        }
+
+        .independent-sections {
+          width: 100%;
+          max-width: 1400px;
         }
 
         .content-area {

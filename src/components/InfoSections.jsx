@@ -64,9 +64,9 @@ const InfoSections = () => {
           width: 100%;
           display: flex;
           flex-direction: column;
-          gap: 4rem;
-          margin-top: 4rem;
-          margin-bottom: 2rem;
+          gap: 8rem;
+          margin-top: 2rem;
+          margin-bottom: 4rem;
         }
 
         .features-grid {
