@@ -135,8 +135,10 @@ function App() {
 
         .hero-section {
           width: 100%;
+          max-width: 1400px;
           text-align: left;
-          margin-bottom: 2.5rem;
+          margin: 0 auto 5.5rem;
+          padding: 0 1rem;
         }
 
         .hero-section h1 {
@@ -151,7 +153,7 @@ function App() {
         .hero-section p {
           color: #86868b;
           font-size: 1.25rem;
-          margin: 0.8rem 0 0;
+          margin: 1.2rem 0 0;
           font-weight: 500;
           max-width: 600px;
         }
