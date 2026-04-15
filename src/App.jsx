@@ -153,7 +153,7 @@ function App() {
         .hero-section p {
           color: #86868b;
           font-size: 1.25rem;
-          margin: 1.2rem 0 0;
+          margin: 1.2rem 0 5rem;
           font-weight: 500;
           max-width: 600px;
         }
