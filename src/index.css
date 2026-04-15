@@ -25,6 +25,42 @@
   --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--apple-gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--apple-gray-400);
+  border-radius: 10px;
+  border: 2px solid var(--apple-gray-100);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #86868b;
+}
+
+[data-theme='dark'] ::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+[data-theme='dark'] ::-webkit-scrollbar-thumb {
+  background: #3a3a3c;
+  border: 2px solid #000000;
+}
+
+[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
+  background: #48484a;
+}
+
 * {
   box-sizing: border-box;
 }
