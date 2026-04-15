@@ -3,7 +3,7 @@ import { Moon, Sun } from 'lucide-react';
 
 const Header = ({ theme, toggleTheme }) => {
     return (
-        <header className="header-bar glass-panel">
+        <header id="top" className="header-bar glass-panel">
             <div className="logo">
                 <div className="icon-box">iC</div>
                 <h1>iCut</h1>

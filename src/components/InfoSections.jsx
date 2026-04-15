@@ -33,9 +33,9 @@ const InfoSections = () => {
 
     return (
         <div className="info-wrapper">
-            <section className="features-grid">
+            <section id="features" className="features-grid">
                 {features.map((f, i) => (
-                    <div key={i} className="feature-card glass-panel">
+                    <div key={i} id={i === 0 ? "security" : undefined} className="feature-card glass-panel">
                         <div className="icon-wrapper">{f.icon}</div>
                         <h3>{f.title}</h3>
                         <p>{f.desc}</p>
@@ -43,7 +43,7 @@ const InfoSections = () => {
                 ))}
             </section>
 
-            <section className="how-it-works glass-panel">
+            <section id="how" className="how-it-works glass-panel">
                 <div className="section-header">
                     <h2>How it works</h2>
                     <p>Three simple steps to manage your media efficiently.</p>
