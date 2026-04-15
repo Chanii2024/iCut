@@ -118,11 +118,14 @@ const InfoSections = () => {
         }
 
         .how-it-works {
-          padding: 6rem 4rem;
+          padding: 6rem 3rem;
           border-radius: 48px;
           text-align: center;
           background: var(--apple-gray-200);
           border: 1px solid var(--apple-gray-400);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
 
         [data-theme='dark'] .how-it-works {
@@ -130,22 +133,31 @@ const InfoSections = () => {
           border-color: #1c1c1e;
         }
 
+        .section-header {
+            max-width: 600px;
+            margin: 0 auto 5rem;
+            text-align: center;
+        }
+
         .section-header h2 {
-          font-size: 2.5rem;
-          font-weight: 700;
-          margin-bottom: 1rem;
-          letter-spacing: -0.03em;
+          font-size: 3rem;
+          font-weight: 800;
+          margin-bottom: 1.2rem;
+          letter-spacing: -0.04em;
+          color: var(--apple-text);
         }
 
         .section-header p {
           color: #86868b;
-          font-size: 1.1rem;
-          margin-bottom: 3rem;
+          font-size: 1.2rem;
+          margin: 0;
+          line-height: 1.5;
         }
 
         .steps-container {
           display: flex;
-          justify-content: space-between;
+          justify-content: space-around;
+          width: 100%;
           gap: 2rem;
         }
 
@@ -157,14 +169,14 @@ const InfoSections = () => {
         }
 
         .step-num {
-          font-size: 3rem;
+          font-size: 3.5rem;
           font-weight: 800;
           background: linear-gradient(180deg, var(--apple-blue), transparent);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
-          opacity: 0.3;
+          opacity: 0.5;
           line-height: 1;
-          margin-bottom: 1rem;
+          margin-bottom: 1.5rem;
         }
 
         .step-item h4 {

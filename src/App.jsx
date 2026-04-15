@@ -129,42 +129,43 @@ function App() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 4rem 2rem;
+          padding: 6rem 2rem;
           flex: 1;
         }
 
         .hero-section {
           width: 100%;
-          max-width: 1400px;
+          max-width: 1200px;
           text-align: center;
-          margin-bottom: 4rem;
+          margin-bottom: 6rem;
         }
 
         .hero-section h1 {
-          font-size: 3.5rem;
+          font-size: 3.8rem;
           font-weight: 800;
           margin: 0;
           letter-spacing: -0.05em;
           color: var(--apple-text);
-          line-height: 1.1;
+          line-height: 1.05;
         }
 
         .hero-section p {
           color: #86868b;
-          font-size: 1.4rem;
+          font-size: 1.5rem;
           margin: 1.5rem auto 0;
           font-weight: 500;
-          max-width: 700px;
+          max-width: 650px;
+          line-height: 1.4;
         }
 
         .layout-grid {
           width: 100%;
-          max-width: 1400px;
+          max-width: 1300px;
           display: grid;
           grid-template-columns: 380px 1fr;
-          gap: 3rem;
+          gap: 4rem;
           align-items: start;
-          margin-bottom: 8rem;
+          margin-bottom: 10rem;
         }
 
         .controls-area {
