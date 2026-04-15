@@ -128,13 +128,11 @@ const ControlPanel = ({
             <style>{`
                 .control-sidebar {
                     width: 100%;
-                    padding: 2rem;
+                    padding: 2.5rem;
                     display: flex;
                     flex-direction: column;
                     gap: 2.5rem;
                     height: fit-content;
-                    position: sticky;
-                    top: 100px;
                 }
 
                 .sidebar-group {

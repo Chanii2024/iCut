@@ -84,8 +84,13 @@ function App() {
             <Header theme={theme} toggleTheme={toggleTheme} />
 
             <main className="app-main">
+                <div className="hero-section">
+                    <h1>Local Batch Converter</h1>
+                    <p>Rename, convert, and bundle your assets securely in one place.</p>
+                </div>
+
                 <div className="layout-grid">
-                    <section className="controls-area">
+                    <aside className="controls-area">
                         <ControlPanel
                             fileCount={files.length}
                             renameSettings={renameSettings}
@@ -98,14 +103,9 @@ function App() {
                             isProcessing={isProcessing}
                             progress={progress}
                         />
-                    </section>
+                    </aside>
 
                     <section className="content-area">
-                        <div className="hero-section">
-                            <h1>Local Batch Converter</h1>
-                            <p>Rename, convert, and bundle your assets securely in one place.</p>
-                        </div>
-                        
                         <DropZone onFilesAdded={handleFilesAdded} />
 
                         <FileList
@@ -129,18 +129,47 @@ function App() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 2rem;
+          padding: 4rem 2rem;
           flex: 1;
+        }
+
+        .hero-section {
+          width: 100%;
+          max-width: 1400px;
+          text-align: center;
+          margin-bottom: 4rem;
+        }
+
+        .hero-section h1 {
+          font-size: 3.5rem;
+          font-weight: 800;
+          margin: 0;
+          letter-spacing: -0.05em;
+          color: var(--apple-text);
+          line-height: 1.1;
+        }
+
+        .hero-section p {
+          color: #86868b;
+          font-size: 1.4rem;
+          margin: 1.5rem auto 0;
+          font-weight: 500;
+          max-width: 700px;
         }
 
         .layout-grid {
           width: 100%;
           max-width: 1400px;
           display: grid;
-          grid-template-columns: 350px 1fr;
+          grid-template-columns: 380px 1fr;
           gap: 3rem;
           align-items: start;
-          margin-bottom: 5rem;
+          margin-bottom: 8rem;
+        }
+
+        .controls-area {
+            position: sticky;
+            top: 100px;
         }
 
         .independent-sections {

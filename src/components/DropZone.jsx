@@ -56,24 +56,36 @@ const DropZone = ({ onFilesAdded }) => {
             <style>{`
         .drop-zone {
           width: 100%;
-          max-width: 800px;
-          height: 200px;
-          margin: 2rem 0;
+          height: 280px;
           display: flex;
           align-items: center;
           justify-content: center;
-          transition: all 0.3s ease;
-          border-width: 2px;
-          border-style: dashed;
-          border-color: rgba(0, 113, 227, 0.3);
+          transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+          border: 2px dashed rgba(0, 113, 227, 0.2);
           cursor: pointer;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .drop-zone::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: var(--apple-blue);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          pointer-events: none;
         }
 
         .drop-zone:hover, .drop-zone.drag-over {
           border-color: var(--apple-blue);
-          transform: scale(1.01);
+          box-shadow: 0 10px 40px rgba(0, 113, 227, 0.08);
           background: var(--apple-bg);
-          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          transform: translateY(-2px);
+        }
+
+        .drop-zone.drag-over::before {
+          opacity: 0.05;
         }
 
         .drop-zone-content {
@@ -86,12 +98,21 @@ const DropZone = ({ onFilesAdded }) => {
           align-items: center;
           justify-content: center;
           cursor: pointer;
+          z-index: 1;
         }
 
         .drop-zone h3 {
-          margin: 1rem 0 0.5rem;
+          margin: 1.5rem 0 0.5rem;
           color: var(--apple-text);
-          font-weight: 500;
+          font-weight: 700;
+          font-size: 1.4rem;
+          letter-spacing: -0.02em;
+        }
+
+        .drop-zone p {
+          color: #86868b;
+          font-size: 1rem;
+          margin: 0;
         }
 
         .file-input {
@@ -100,6 +121,7 @@ const DropZone = ({ onFilesAdded }) => {
         
         .icon {
           color: var(--apple-blue);
+          filter: drop-shadow(0 4px 10px rgba(0, 113, 227, 0.2));
         }
       `}</style>
         </div>

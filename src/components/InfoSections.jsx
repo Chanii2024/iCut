@@ -118,9 +118,16 @@ const InfoSections = () => {
         }
 
         .how-it-works {
-          padding: 4rem;
-          border-radius: 32px;
+          padding: 6rem 4rem;
+          border-radius: 48px;
           text-align: center;
+          background: var(--apple-gray-200);
+          border: 1px solid var(--apple-gray-400);
+        }
+
+        [data-theme='dark'] .how-it-works {
+          background: #0a0a0c;
+          border-color: #1c1c1e;
         }
 
         .section-header h2 {
