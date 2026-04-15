@@ -4,6 +4,7 @@ import FileList from './components/FileList';
 import ControlPanel from './components/ControlPanel';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import InfoSections from './components/InfoSections';
 import { processAndDownload } from './utils/fileProcessor';
 
 function App() {
@@ -108,6 +109,8 @@ function App() {
                     onRemove={handleRemoveFile}
                     newNames={previewNames}
                 />
+
+                <InfoSections />
             </div>
 
             <Footer />
